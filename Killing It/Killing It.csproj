@@ -97,7 +97,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\background.png" />
-    <Resource Include="Images\bloodsplats_0006.png" />
     <Resource Include="Images\border.jpg" />
     <Resource Include="Images\box.png" />
     <Resource Include="Images\box2.jpg" />
@@ -116,6 +115,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\ammo Box.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\blood stain.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

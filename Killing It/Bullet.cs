@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -12,9 +15,12 @@ namespace Killing_It
         public int bulletLeft, bulletTop;
         Canvas canvas;
 
-        private int speed = 6;
+
+        private int speed = 4;
         private Image bullet = new Image();
+        private List<Image> bloodStains = new List<Image>();
         private DispatcherTimer bulletTimer = new DispatcherTimer();
+        private DispatcherTimer bloodStainRemoveTimer = new DispatcherTimer();
 
         public void MakeBullet(Canvas canvas)
         {
@@ -31,7 +37,7 @@ namespace Killing_It
             canvas.Children.Add(bullet);
 
             bulletTimer.Tick += moveBullet;
-            bulletTimer.Interval = TimeSpan.FromMilliseconds(speed);
+            bulletTimer.Interval = TimeSpan.FromMilliseconds(2);
             bulletTimer.Start();
 
         }
@@ -71,7 +77,7 @@ namespace Killing_It
             }
 
             if (Canvas.GetTop(bullet) < 0 || Canvas.GetTop(bullet) + bullet.ActualHeight > canvas.ActualHeight ||
-                Canvas.GetLeft(bullet) < 0 || Canvas.GetLeft(bullet) + bullet.ActualWidth > canvas.ActualWidth)
+                Canvas.GetLeft(bullet) < 0 || Canvas.GetLeft(bullet) + bullet.ActualWidth > canvas.ActualWidth || bullet.Source == null)
             {
                 bulletTimer.Stop();
                 canvas.Children.Remove(bullet);
