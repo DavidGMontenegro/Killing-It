@@ -1,0 +1,28 @@
+﻿<Window x:Class="Killing_It.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Killing_It"
+        mc:Ignorable="d"
+        Title="MainWindow" 
+        Height="500" Width="700" ResizeMode="NoResize"
+        KeyDown="Window_KeyDown" KeyUp="Window_KeyUp">
+
+    <Canvas Name="backgroundCanvas" Height="500" Width="700">
+        <Image Name="background" Source="/Images/background.png" VerticalAlignment="Top" HorizontalAlignment="Left" Canvas.Left="-172" Canvas.Top="-150"/>
+        <Image Name="player" RenderTransformOrigin=".5,.5" Source="/Images/player.gif" VerticalAlignment="Center" HorizontalAlignment="Left" Canvas.Left="314" Canvas.Top="210" Height="63" Width="71"></Image>
+        <Image Tag="box" Source="/Images/box.png" Height="70" Width="70" Canvas.Left="-74" Canvas.Top="10" ></Image>
+        <Image Tag="box" Source="/Images/box.png" Height="70" Width="70" Canvas.Left="350" Canvas.Top="-43" HorizontalAlignment="Left" VerticalAlignment="Center" ></Image>
+        <Image Tag="box" Source="/Images/box2.jpg" Height="70" Width="70" Canvas.Left="657" Canvas.Top="469" ></Image>
+        <Image Tag="box" Source="/Images/box2.jpg" Height="70" Width="70" Canvas.Left="10" Canvas.Top="469" ></Image>
+        <Image Tag="box" Source="/Images/box2.jpg" Height="70" Width="70" Canvas.Left="657" Canvas.Top="85" ></Image>
+        <Image Source="/Images/heart.png" Height="30" Width="32" Canvas.Left="425" Canvas.Top="18" HorizontalAlignment="Left" VerticalAlignment="Center" ></Image>
+        <Label Name="ammo" Background="Black" Foreground="White" Content="30" Canvas.Left="24" FontSize="30" FontFamily="Bernard MT" HorizontalContentAlignment="Right" Height="38" Width="80" Canvas.Top="10" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <Image Source="/Images/ammo.png" Height="30" Width="30" Canvas.Left="30" Canvas.Top="16" HorizontalAlignment="Center" VerticalAlignment="Top" ></Image>
+        <Image Source="/Images/golden frame.png"  Width="107" Height="48" Stretch="Fill" Canvas.Left="10" Canvas.Top="7" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <ProgressBar Name="liveProgressBar" Height="24" Width="211" Canvas.Left="467" Canvas.Top="21" HorizontalAlignment="Left" VerticalAlignment="Center" Background="Wheat" Foreground="#3a260e" Minimum="0" Maximum="100" Value="100"/>
+
+    </Canvas>
+
+</Window>
