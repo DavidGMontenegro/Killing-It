@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" 
         Height="500" Width="700" ResizeMode="NoResize"
-        KeyDown="Window_KeyDown" KeyUp="Window_KeyUp">
+        KeyDown="Window_KeyDown" KeyUp="Window_KeyUp" MouseLeftButtonUp="Window_MouseLeftButtonUp">
 
     <Canvas Name="backgroundCanvas" Height="500" Width="700">
         <Image Name="background" Source="/Images/background.png" VerticalAlignment="Center" HorizontalAlignment="Left" Canvas.Left="-137" Canvas.Top="-142"/>
@@ -19,8 +19,8 @@
         <Image Tag="box" Source="/Images/box2.jpg" Height="70" Width="70" Canvas.Left="657" Canvas.Top="85" ></Image>
         <Rectangle Fill="DarkOliveGreen" Width="700" Height="45"></Rectangle>
         <Image Source="/Images/heart.png" Height="30" Width="32" Canvas.Left="444" Canvas.Top="7" HorizontalAlignment="Left" VerticalAlignment="Top" ></Image>
-        <Label Name="ammo" Foreground="White" Content="30" Canvas.Left="65" FontSize="30" FontFamily="Bernard MT" HorizontalContentAlignment="Right" Height="38" Width="43" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Top="3"/>
-        <Label Name="Score" Foreground="White" Content="Score : 0" FontSize="30" FontFamily="Bernard MT" HorizontalContentAlignment="Center" Height="38" Width="auto" VerticalAlignment="Top" Canvas.Left="227" HorizontalAlignment="Center"/>
+        <Label Name="AmmoLabel" Foreground="White" Content="30" Canvas.Left="65" FontSize="30" FontFamily="Bernard MT" HorizontalContentAlignment="Right" Height="38" Width="43" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Top="3"/>
+        <Label Name="ScoreLabel" Foreground="White" Content="Score : 0" FontSize="30" FontFamily="Bernard MT" HorizontalContentAlignment="Center" Height="38" Width="auto" VerticalAlignment="Top" Canvas.Left="227" HorizontalAlignment="Center"/>
         <Image Source="/Images/ammo.png" Height="30" Width="30" Canvas.Left="35" Canvas.Top="10" HorizontalAlignment="Center" VerticalAlignment="Top" ></Image>
         <Image Source="/Images/golden frame.png"  Width="122" Height="48" Stretch="Fill" Canvas.Left="10" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Top="-2"/>
         <ProgressBar Name="liveProgressBar" Height="24" Width="199" Canvas.Left="479" Canvas.Top="10" HorizontalAlignment="Left" VerticalAlignment="Center" Background="Wheat" Foreground="#3a260e" Minimum="0" Maximum="100" Value="100"/>

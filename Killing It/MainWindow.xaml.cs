@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 using System.Windows.Threading;
 
 namespace Killing_It
@@ -16,281 +18,247 @@ namespace Killing_It
     /// </summary>
     public partial class MainWindow : Window
     {
-        DispatcherTimer spawnAmmoTimer = new DispatcherTimer();
-        DispatcherTimer spawnZombieTimer = new DispatcherTimer();
+        DispatcherTimer gameTimer = new DispatcherTimer();
+        RotateTransform rotateTransform = new RotateTransform();
 
         Random rand = new Random();
-
-
-        private List<Image> bloodStains = new List<Image>();
-        private DispatcherTimer bloodStainRemoveTimer = new DispatcherTimer();
-
-        bool moveUp, moveDown, moveLeft, moveRight, spawnedAmmo = false;
-        string facing = "right";
-        double playerSpeed = 4;
-        double backgroundSpeed = 3;
+        bool goUp, goLeft, goRight, goDown;
+        string looking = "right";
+        int playerSpeed = 5;
         double zombieSpeed = 1;
-        int maxAmmo = 30;
-        int actualAmmo, ammoBoxBonus = 5;
-        int posX, posY;
+        int ammo = 30;
         int score = 0;
+        int actualAllowedZombies = 3;
+        int zombieNumber = 0;
+        int spawnedAmmo = 0;
+
+        List<Image> toDelete = new List<Image>();
+
 
         public MainWindow()
         {
             InitializeComponent();
-            actualAmmo = maxAmmo;
-            ammo.Content = actualAmmo;
+            spawnZombies();
+            spawnZombies();
+            spawnZombies();
+            zombieNumber += 3;
 
-            spawnAmmoTimer.Tick += spawnAmmo;
-            spawnAmmoTimer.Interval = TimeSpan.FromSeconds(5);
+            gameTimer.Tick += GameTimerEvent;
+            gameTimer.Interval = TimeSpan.FromMilliseconds(20);
+            gameTimer.Start();
 
-            spawnZombieTimer.Tick += spawnZombie;
-            spawnZombieTimer.Interval = TimeSpan.FromSeconds(2);
 
-            spawnZombieTimer.Start();
-            spawnAmmoTimer.Start();
         }
 
-        private void spawnZombie(object sender, EventArgs e)
+        private void GameTimerEvent(object sender, EventArgs e)
         {
-            DispatcherTimer zombieMoveTimer = new DispatcherTimer();
+
+            AmmoLabel.Content = ammo;
+            ScoreLabel.Content = "Score: " + score;
+
+            if (goLeft == true && Canvas.GetLeft(player) > 0)
+            {
+                Canvas.SetLeft(player, Canvas.GetLeft(player) - playerSpeed);
+                rotateTransform.Angle = 0;
+                player.RenderTransform = rotateTransform;
+                rotateTransform.Angle = 180;
+                player.RenderTransform = rotateTransform;
+            }
+            if (goRight == true && Canvas.GetLeft(player) + player.ActualWidth < backgroundCanvas.ActualWidth)
+            {
+                Canvas.SetLeft(player, Canvas.GetLeft(player) + playerSpeed);
+                rotateTransform.Angle = 0;
+                player.RenderTransform = rotateTransform;
+            }
+            if (goUp == true && Canvas.GetTop(player) > 45)
+            {
+                Canvas.SetTop(player, Canvas.GetTop(player) - playerSpeed);
+                rotateTransform.Angle = 0;
+                player.RenderTransform = rotateTransform;
+                rotateTransform.Angle = -90;
+                player.RenderTransform = rotateTransform;
+            }
+            if (goDown == true && Canvas.GetTop(player) + player.Height < backgroundCanvas.ActualHeight)
+            {
+                rotateTransform.Angle = 0;
+                player.RenderTransform = rotateTransform;
+                rotateTransform.Angle = 90;
+                player.RenderTransform = rotateTransform;
+                Canvas.SetTop(player, Canvas.GetTop(player) + playerSpeed);
+            }
+
+            foreach (var x in backgroundCanvas.Children.OfType<Image>())
+            {
+                if (x.Tag != null)
+                {
+                    if (x.Tag.Equals("ammo box"))
+                    {
+                        Rect playerRect = new Rect(Canvas.GetLeft(player), Canvas.GetTop(player), player.Width, player.Height);
+                        Rect ammoBoxRect = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
+
+                        if (playerRect.IntersectsWith(ammoBoxRect))
+                        {
+                            x.Tag = null;
+                            toDelete.Add(x);
+                            ammo += 5;
+                            spawnedAmmo--;
+                        }
+                    }
+                    else if (x.Tag.Equals("blood stain"))
+                    {
+                        x.Opacity -= 0.01;
+                    }
+                    else if (x.Tag.Equals("zombie"))
+                    {
+                        Rect playerRect = new Rect(Canvas.GetLeft(player), Canvas.GetTop(player), player.Width, player.Height);
+                        Rect zombieRect = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
+
+                        if (playerRect.IntersectsWith(zombieRect))
+                        {
+                            liveProgressBar.Value -= 1;
+                        }
+
+                        RotateTransform rotateTransform = new RotateTransform();
+                        if (Canvas.GetLeft(x) < Canvas.GetLeft(player))
+                        {
+                            rotateTransform.Angle = 0;
+                            Canvas.SetLeft(x, Canvas.GetLeft(x) + zombieSpeed);
+                            x.RenderTransform = rotateTransform;
+                        }
+
+                        if (Canvas.GetLeft(x) > Canvas.GetLeft(player))
+                        {
+                            rotateTransform.Angle = 0;
+                            Canvas.SetLeft(x, Canvas.GetLeft(x) - zombieSpeed);
+                            x.RenderTransform = rotateTransform;
+                            rotateTransform.Angle = 180;
+                            x.RenderTransform = rotateTransform;
+                        }
+
+                        if (Canvas.GetTop(x) > Canvas.GetTop(player))
+                        {
+                            rotateTransform.Angle = 0;
+                            Canvas.SetTop(x, Canvas.GetTop(x) - zombieSpeed);
+                            x.RenderTransform = rotateTransform;
+                            rotateTransform.Angle = -90;
+                            x.RenderTransform = rotateTransform;
+                        }
+
+                        if (Canvas.GetTop(x) < Canvas.GetTop(player))
+                        {
+                            rotateTransform.Angle = 0;
+                            Canvas.SetTop(x, Canvas.GetTop(x) + zombieSpeed);
+                            x.RenderTransform = rotateTransform;
+                            rotateTransform.Angle = 90;
+                            x.RenderTransform = rotateTransform;
+                        }
+                    }
+                    else if (x.Tag.Equals("bullet"))
+                    {
+                        foreach (var y in backgroundCanvas.Children.OfType<Image>())
+                        {
+                            if (y.Tag != null)
+                            {
+                                if (y.Tag.Equals("zombie"))
+                                {
+                                    Rect zombieRect = new Rect(Canvas.GetLeft(y), Canvas.GetTop(y), y.Width, y.Height);
+                                    Rect bulletRec = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
+
+                                    if (bulletRec.IntersectsWith(zombieRect))
+                                    {
+                                        score++;
+
+                                        y.Source = new BitmapImage(new Uri("\\Images\\blood stain.png", UriKind.RelativeOrAbsolute));
+                                        y.Tag = "blood stain";
+                                        toDelete.Add(y);
+                                        zombieNumber--;
+                                        x.Tag = null;
+                                        toDelete.Add(x);
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                }
+
+            }
+
+            int numToDelete = toDelete.Count;
+            for (int i = 0; i < numToDelete; i++)
+            {
+                if (toDelete[i].Tag != null)
+                {
+                    if (toDelete[i].Tag.Equals("blood stain"))
+                    {
+                        if (zombieNumber < actualAllowedZombies)
+                        {
+                            spawnZombies();
+                            zombieNumber++;
+                        }
+
+                        if (toDelete[i].Opacity == 0)
+                        {
+                            backgroundCanvas.Children.Remove(toDelete[i]);
+                        }
+                    }
+                }
+                else
+                {
+                    backgroundCanvas.Children.Remove(toDelete[i]);
+                }
+            }
+
+            if (score / 3 > actualAllowedZombies)
+            {
+                actualAllowedZombies += 1;
+            }
+        }
+
+        private void spawnZombies()
+        {
             Image zombie = new Image();
             int posX, posY;
 
+            zombie.Tag = "zombie";
             zombie.Source = new BitmapImage(new Uri("\\Images\\zombie.gif", UriKind.RelativeOrAbsolute));
+            zombie.RenderTransformOrigin = new Point(0.5, 0.5);
 
             zombie.Height = 60;
             zombie.Width = 60;
-            zombie.RenderTransformOrigin = new Point(0.5, 0.5);
 
-            posX = rand.Next(0, (int)backgroundCanvas.ActualWidth - (int)zombie.ActualWidth);
-            posY = rand.Next(0, (int)backgroundCanvas.ActualHeight - (int)zombie.ActualHeight);
-
+            posX = rand.Next(0, (int)backgroundCanvas.ActualWidth);
+            posY = rand.Next(0, (int)backgroundCanvas.ActualHeight);
 
             Canvas.SetLeft(zombie, posX);
             Canvas.SetTop(zombie, posY);
 
-            zombie.Tag = "zombie";
-
             backgroundCanvas.Children.Add(zombie);
-
-            zombieMoveTimer.Tick += moveZombies;
-            zombieMoveTimer.Interval = TimeSpan.FromMilliseconds(30);
-            zombieMoveTimer.Start();
-
         }
 
-        private void moveZombies(object sender, EventArgs e)
+        private void spawnAmmo()
         {
-            foreach (var zombie in backgroundCanvas.Children.OfType<Image>())
-            {
-                if (zombie.Tag != null && zombie.Tag.Equals("zombie"))
-                {
-                    RotateTransform rotateTransform = new RotateTransform();
-                    if (Canvas.GetLeft(zombie) > Canvas.GetLeft(player))
-                    {
-                        rotateTransform.Angle = 0;
-                        Canvas.SetLeft(zombie, Canvas.GetLeft(zombie) - zombieSpeed);
-                        zombie.RenderTransform = rotateTransform;
-                        rotateTransform.Angle = 180;
-                        zombie.RenderTransform = rotateTransform;
-                    }
+            Image ammoBox = new Image();
+            int posX, posY;
 
-                    if (Canvas.GetLeft(zombie) < Canvas.GetLeft(player))
-                    {
-                        rotateTransform.Angle = 0;
-                        Canvas.SetLeft(zombie, Canvas.GetLeft(zombie) + zombieSpeed);
-                        zombie.RenderTransform = rotateTransform;
-                    }
+            ammoBox.Tag = "ammo box";
+            ammoBox.Source = new BitmapImage(new Uri("\\Images\\ammo box.png", UriKind.RelativeOrAbsolute));
 
-                    if (Canvas.GetTop(zombie) > Canvas.GetTop(player))
-                    {
-                        rotateTransform.Angle = 0;
-                        Canvas.SetTop(zombie, Canvas.GetTop(zombie) - zombieSpeed);
-                        zombie.RenderTransform = rotateTransform;
-                        rotateTransform.Angle = -90;
-                        zombie.RenderTransform = rotateTransform;
-                    }
+            ammoBox.Height = 40;
+            ammoBox.Width = 40;
 
-                    if (Canvas.GetTop(zombie) < Canvas.GetTop(player))
-                    {
-                        rotateTransform.Angle = 0;
-                        Canvas.SetTop(zombie, Canvas.GetTop(zombie) + zombieSpeed);
-                        zombie.RenderTransform = rotateTransform;
-                        rotateTransform.Angle = 90;
-                        zombie.RenderTransform = rotateTransform;
-                    }
+            posX = rand.Next(0, (int)backgroundCanvas.ActualWidth - (int)ammoBox.ActualWidth);
+            posY = rand.Next(0, (int)backgroundCanvas.ActualHeight - (int)ammoBox.ActualWidth);
 
+            Canvas.SetLeft(ammoBox, posX);
+            Canvas.SetTop(ammoBox, posY);
 
-                    foreach (var bullet in backgroundCanvas.Children.OfType<Image>())
-                    {
-                        if (bullet.Tag != null && bullet.Tag.Equals("bullet") && bullet != null)
-                        {
-                            Rect zombieRect = new Rect(Canvas.GetLeft(zombie), Canvas.GetTop(zombie), zombie.Width, zombie.Height);
-                            Rect bulletRect = new Rect(Canvas.GetLeft(bullet), Canvas.GetTop(bullet), bullet.Width, bullet.Height);
-
-                            if (bulletRect.IntersectsWith(zombieRect))
-                            {
-                                score++;
-                                Score.Content = "Score: " + score;
-
-                                zombie.Source = new BitmapImage(new Uri("\\Images\\blood stain.png", UriKind.RelativeOrAbsolute));
-                                zombie.Tag = "blood stain";
-                                bloodStains.Add(zombie);
-
-                                bullet.Source = null;
-
-                                DispatcherTimer bloodStainRemoveTimer = new DispatcherTimer();
-
-                                bloodStainRemoveTimer.Tick += removeBloodStain;
-                                bloodStainRemoveTimer.Interval = TimeSpan.FromMilliseconds(150);
-                                bloodStainRemoveTimer.Start();
-                            }
-                        }
-                    }
-                }
-            }
+            backgroundCanvas.Children.Add(ammoBox);
+            spawnedAmmo++;
         }
 
-        private void removeBloodStain(object sender, EventArgs e)
-        {
-            int bloodStainNumber = bloodStains.Count;
-            for (int i = 0; i < bloodStainNumber; i++)
-            {
-                if (bloodStains[i].Opacity != 0)
-                {
-                    bloodStains[i].Opacity -= 0.2;
-                }
-                else
-                {
-                    backgroundCanvas.Children.Remove(bloodStains[i]);
-                    bloodStains.Remove(bloodStains[i]);
-                    bloodStainRemoveTimer.Stop();
-                }
-            }
-        }
 
-        private void spawnAmmo(object sender, EventArgs e)
-        {
-            if (actualAmmo < maxAmmo && !spawnedAmmo)
-            {
-                Image ammoImage = new Image();
-                ammoImage.Source = new BitmapImage(new Uri("\\Images\\ammo Box.png", UriKind.RelativeOrAbsolute));
-
-                ammoImage.Height = 30;
-                ammoImage.Width = 30;
-
-                posX = rand.Next((int)Canvas.GetLeft(background) + 20, (int)Canvas.GetLeft(background) + (int)background.ActualWidth - (int)ammoImage.ActualWidth - 50);
-                posY = rand.Next((int)Canvas.GetTop(background) + 20, (int)Canvas.GetTop(background) + (int)background.ActualHeight - (int)ammoImage.ActualHeight - 50);
-
-
-                Canvas.SetLeft(ammoImage, posX);
-                Canvas.SetTop(ammoImage, posY);
-                ammoImage.Tag = "ammoBox";
-
-                backgroundCanvas.Children.Add(ammoImage);
-                spawnedAmmo = true;
-            }
-        }
-
-        private void movePlayer()
-        {
-            foreach (var x in backgroundCanvas.Children.OfType<Image>())
-            {
-                if (x.Tag != null && x.Tag.Equals("box"))
-                {
-                    Rect playerHitBox = new Rect(Canvas.GetLeft(player), Canvas.GetTop(player), player.Width, player.Height);
-                    Rect boxHitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
-                    /*
-                    if (playerHitBox.IntersectsWith(boxHitBox))
-                    {
-                        if (moveUp)
-                        {
-                            moveUp = false;
-                            Canvas.SetTop(player, Canvas.GetTop(player) + playerSpeed);
-                        }
-                        else if (moveDown)
-                        {
-                            moveDown = false;
-                            Canvas.SetTop(player, Canvas.GetTop(player) - playerSpeed);
-                        }
-                        else if (moveLeft)
-                        {
-                            moveLeft = false;
-                            Canvas.SetLeft(player, Canvas.GetLeft(player) + playerSpeed);
-                        }
-                        else if (moveRight)
-                        {
-                            moveRight = false;
-                            Canvas.SetLeft(player, Canvas.GetLeft(player) - playerSpeed);
-                        }
-                    }
-                    */
-                }
-
-                if (x.Tag != null && x.Tag.Equals("ammoBox"))
-                {
-
-                    Rect playerHitBox = new Rect(Canvas.GetLeft(player), Canvas.GetTop(player), player.Width, player.Height);
-                    Rect boxHitBox = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
-
-                    if (playerHitBox.IntersectsWith(boxHitBox))
-                    {
-                        if (actualAmmo + ammoBoxBonus > maxAmmo)
-                        {
-                            actualAmmo = maxAmmo;
-                            ammo.Content = actualAmmo;
-                        }
-                        else
-                        {
-                            actualAmmo += ammoBoxBonus;
-                            ammo.Content = actualAmmo;
-                        }
-                        backgroundCanvas.Children.Remove(x);
-                        spawnedAmmo = false;
-                    }
-
-                    break;
-                }
-            }
-
-            RotateTransform rotateTransform = new RotateTransform(0);
-            if (moveUp && Canvas.GetTop(player) > 5)
-            {
-                Canvas.SetTop(player, Canvas.GetTop(player) - playerSpeed);
-                player.RenderTransform = rotateTransform;
-                rotateTransform.Angle = -90;
-                player.RenderTransform = rotateTransform;
-                facing = "up";
-                moveBackground("down");
-            }
-            if (moveDown && Canvas.GetTop(player) + player.ActualHeight < backgroundCanvas.ActualHeight - 25)
-            {
-                Canvas.SetTop(player, Canvas.GetTop(player) + playerSpeed);
-                player.RenderTransform = rotateTransform;
-                rotateTransform.Angle = 90;
-                player.RenderTransform = rotateTransform;
-                facing = "down";
-                moveBackground("up");
-            }
-            if (moveLeft && Canvas.GetLeft(player) > 5)
-            {
-                Canvas.SetLeft(player, Canvas.GetLeft(player) - playerSpeed);
-                player.RenderTransform = rotateTransform;
-                rotateTransform.Angle = 180;
-                player.RenderTransform = rotateTransform;
-                facing = "left";
-                moveBackground("right");
-            }
-            if (moveRight && Canvas.GetLeft(player) + player.ActualWidth < backgroundCanvas.ActualWidth - 5)
-            {
-                Canvas.SetLeft(player, Canvas.GetLeft(player) + playerSpeed);
-                player.RenderTransform = rotateTransform;
-                facing = "right";
-                moveBackground("left");
-            }
-        }
-
+        /*
         private void moveBackground(string direction)
         {
             switch (direction)
@@ -352,48 +320,31 @@ namespace Killing_It
                     break;
             }
         }
+        */
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             switch (e.Key)
             {
-                case Key.Up:
-                    moveUp = true;
+                case Key.W:
+                    goUp = true;
+                    looking = "up";
                     break;
 
-                case Key.Down:
-                    moveDown = true;
+                case Key.S:
+                    goDown = true;
+                    looking = "down";
                     break;
 
-                case Key.Left:
-                    moveLeft = true;
+                case Key.A:
+                    goLeft = true;
+                    looking = "left";
                     break;
 
-                case Key.Right:
-                    moveRight = true;
+                case Key.D:
+                    goRight = true;
+                    looking = "right";
                     break;
-
-                case Key.Space:
-                    shoot(facing);
-                    break;
-
-            }
-
-            movePlayer();
-        }
-
-        public void shoot(string direction)
-        {
-            if (actualAmmo > 0)
-            {
-                actualAmmo--;
-                ammo.Content = actualAmmo;
-
-                Bullet bullet = new Bullet();
-                bullet.direction = direction;
-                bullet.bulletLeft = (int)(Canvas.GetLeft(player) + (player.ActualWidth / 2));
-                bullet.bulletTop = (int)(Canvas.GetTop(player) + (player.ActualHeight / 2));
-                bullet.MakeBullet(backgroundCanvas);
             }
         }
 
@@ -401,23 +352,61 @@ namespace Killing_It
         {
             switch (e.Key)
             {
-                case Key.Up:
-                    moveUp = false;
+                case Key.W:
+                    goUp = false;
                     break;
 
-                case Key.Down:
-                    moveDown = false;
+                case Key.S:
+                    goDown = false;
                     break;
 
-                case Key.Left:
-                    moveLeft = false;
+                case Key.A:
+                    goLeft = false;
                     break;
 
-                case Key.Right:
-                    moveRight = false;
+                case Key.D:
+                    goRight = false;
                     break;
 
             }
         }
+
+        private void Window_MouseLeftButtonUp(object sender, MouseButtonEventArgs mouse)
+        {
+            if (ammo > 0)
+            {
+                Point mousePosition = mouse.GetPosition(this);
+                Shoot((int)mousePosition.X, (int)mousePosition.Y);
+            }
+
+            if (ammo < 15 && spawnedAmmo < 4)
+            {
+                spawnAmmo();
+            }
+        }
+
+        public void Shoot(int posX, int posY)
+        {
+            ammo--;
+
+            Bullet bullet = new Bullet();
+            bullet.mousePosX = posX;
+            bullet.mousePosY = posY;
+
+            double radians = Math.Atan2(posY - Canvas.GetTop(player), posX - Canvas.GetLeft(player));
+
+            double angleBetween = radians * (180 / Math.PI);
+
+            RotateTransform rotateTransform = new RotateTransform();
+            rotateTransform.Angle = angleBetween;
+            player.RenderTransform = rotateTransform;
+
+
+            bullet.bulletLeft = (int)(Canvas.GetLeft(player) + (player.ActualWidth / 2));
+            bullet.bulletTop = (int)(Canvas.GetTop(player) + (player.ActualHeight / 2));
+            bullet.MakeBullet(backgroundCanvas);
+        }
+
+
     }
 }

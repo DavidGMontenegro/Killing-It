@@ -11,7 +11,7 @@ namespace Killing_It
 {
     internal class Bullet
     {
-        public string direction;
+        public int mousePosX, mousePosY;
         public int bulletLeft, bulletTop;
         Canvas canvas;
 
@@ -44,36 +44,39 @@ namespace Killing_It
 
         private void moveBullet(object sender, EventArgs e)
         {
-            RotateTransform rotateTransform = new RotateTransform(0);
-
-            switch (direction)
+            RotateTransform rotateTransform = new RotateTransform();
+            if (Canvas.GetLeft(bullet) < mousePosX)
             {
+                rotateTransform.Angle = 0;
+                Canvas.SetLeft(bullet, Canvas.GetLeft(bullet) + speed);
+                bullet.RenderTransform = rotateTransform;
+            }
 
-                case "up":
-                    bullet.RenderTransform = rotateTransform;
-                    rotateTransform.Angle = -90;
-                    bullet.RenderTransform = rotateTransform;
-                    Canvas.SetTop(bullet, Canvas.GetTop(bullet) - speed);
-                    break;
+            if (Canvas.GetLeft(bullet) > mousePosX)
+            {
+                rotateTransform.Angle = 0;
+                Canvas.SetLeft(bullet, Canvas.GetLeft(bullet) - speed);
+                bullet.RenderTransform = rotateTransform;
+                rotateTransform.Angle = 180;
+                bullet.RenderTransform = rotateTransform;
+            }
 
-                case "down":
-                    bullet.RenderTransform = rotateTransform;
-                    rotateTransform.Angle = 90;
-                    bullet.RenderTransform = rotateTransform;
-                    Canvas.SetTop(bullet, Canvas.GetTop(bullet) + speed);
-                    break;
+            if (Canvas.GetTop(bullet) > mousePosY)
+            {
+                rotateTransform.Angle = 0;
+                Canvas.SetTop(bullet, Canvas.GetTop(bullet) - speed);
+                bullet.RenderTransform = rotateTransform;
+                rotateTransform.Angle = -90;
+                bullet.RenderTransform = rotateTransform;
+            }
 
-                case "left":
-                    bullet.RenderTransform = rotateTransform;
-                    rotateTransform.Angle = 180;
-                    bullet.RenderTransform = rotateTransform;
-                    Canvas.SetLeft(bullet, Canvas.GetLeft(bullet) - speed);
-                    break;
-
-                case "right":
-                    bullet.RenderTransform = rotateTransform;
-                    Canvas.SetLeft(bullet, Canvas.GetLeft(bullet) + speed);
-                    break;
+            if (Canvas.GetTop(bullet) < mousePosY)
+            {
+                rotateTransform.Angle = 0;
+                Canvas.SetTop(bullet, Canvas.GetTop(bullet) + speed);
+                bullet.RenderTransform = rotateTransform;
+                rotateTransform.Angle = 90;
+                bullet.RenderTransform = rotateTransform;
             }
 
             if (Canvas.GetTop(bullet) < 0 || Canvas.GetTop(bullet) + bullet.ActualHeight > canvas.ActualHeight ||
