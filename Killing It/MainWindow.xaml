@@ -12,11 +12,11 @@
     <Canvas Name="backgroundCanvas" Height="700" Width="900">
         <Image Name="background" Source="/Images/background.png" VerticalAlignment="Top" HorizontalAlignment="Left" Canvas.Left="-842" Canvas.Top="-474" Height="1816" Width="2584" Stretch="Fill"/>
         <Image Name="player" Tag="player" RenderTransformOrigin=".5,.5" Source="/Images/player.gif" VerticalAlignment="Center" HorizontalAlignment="Left" Canvas.Left="314" Canvas.Top="210" Height="60" Width="60"></Image>
-        <Image Tag="box" Source="/Images/box.png" Height="70" Width="70" Canvas.Left="-40" Canvas.Top="22" ></Image>
+        <Image Tag="box" Source="/Images/box.png" Height="70" Width="70" Canvas.Left="1627" Canvas.Top="-437" HorizontalAlignment="Left" VerticalAlignment="Center" ></Image>
         <Image Tag="box" Source="/Images/box.png" Height="70" Width="70" Canvas.Left="350" Canvas.Top="-43" HorizontalAlignment="Left" VerticalAlignment="Center" ></Image>
-        <Image Tag="box" Source="/Images/box2.jpg" Height="70" Width="70" Canvas.Left="657" Canvas.Top="469" ></Image>
+        <Image Tag="box" Source="/Images/box2.jpg" Height="70" Width="70" Canvas.Left="315" Canvas.Top="805" ></Image>
         <Image Tag="box" Source="/Images/box2.jpg" Height="70" Width="70" Canvas.Left="10" Canvas.Top="469" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
-        <Image Tag="box" Source="/Images/box2.jpg" Height="70" Width="70" Canvas.Left="657" Canvas.Top="85" ></Image>
+        <Image Tag="box" Source="/Images/box2.jpg" Height="70" Width="70" Canvas.Left="1153" Canvas.Top="347" ></Image>
         <Rectangle Fill="DarkOliveGreen" Width="200" Height="35" Canvas.Left="314" Canvas.Top="13" HorizontalAlignment="Center" VerticalAlignment="Top"></Rectangle>
         <Image Source="/Images/heart.png" Height="30" Width="32" Canvas.Left="622" Canvas.Top="7" HorizontalAlignment="Left" VerticalAlignment="Center" ></Image>
         <Label Name="AmmoLabel" Foreground="White" Content="30" Canvas.Left="78" FontSize="30" FontFamily="Bernard MT" HorizontalContentAlignment="Right" Height="40" Width="46" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Top="10"/>
@@ -24,8 +24,392 @@
         <Image Source="/Images/ammo.png" Height="30" Width="30" Canvas.Left="45" Canvas.Top="17" HorizontalAlignment="Left" VerticalAlignment="Top" ></Image>
         <Image Source="/Images/golden frame.png"  Width="142" Height="48" Stretch="Fill" Canvas.Left="10" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Top="7"/>
         <ProgressBar Name="liveProgressBar" Height="30" Width="214" Canvas.Left="657" Canvas.Top="7" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Wheat" Foreground="#3a260e" Minimum="0" Maximum="100" Value="100"/>
-        <Image Tag="box" Source="/Images/box2.jpg" Height="70" Width="70" Canvas.Left="587" Canvas.Top="85" HorizontalAlignment="Left" VerticalAlignment="Center" />
-        <Image Tag="box" Source="/Images/box2.jpg" Height="70" Width="70" Canvas.Left="10" Canvas.Top="399" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        <Image Tag="box" Source="/Images/box2.jpg" Height="70" Width="70" Canvas.Left="1083" Canvas.Top="347" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Image Tag="box" Source="/Images/box2.jpg" Height="70" Width="70" Canvas.Left="385" Canvas.Top="805" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Image Tag="box" Source="/Images/box2.jpg" Height="70" Width="70" Canvas.Left="315" Canvas.Top="875" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Image Tag="box" Source="/Images/box2.jpg" Height="70" Width="70" Canvas.Left="385" Canvas.Top="875" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Image Tag="box" Source="/Images/box2.jpg" Height="70" Width="70" Canvas.Left="-130" Canvas.Top="469" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        <Image Tag="box" Source="/Images/red wall.png" Height="70" Width="70" Canvas.Left="1642" Canvas.Top="-26" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Image Tag="box" Source="/Images/red wall.png" Height="70" Width="70" Canvas.Left="1596" Canvas.Top="-26" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        <Image Tag="box" Source="/Images/red wall.png" Height="70" Width="64" Canvas.Left="1591" Canvas.Top="-19" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image Tag="box" Source="/Images/red wall.png" Height="70" Width="70" Canvas.Left="1409" Canvas.Top="-26" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        <Image Tag="box" Source="/Images/red wall.png" Height="70" Width="70" Canvas.Left="1361" Canvas.Top="-26" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        <Image Tag="box" Source="/Images/red wall.png" Height="70" Width="70" Canvas.Left="1315" Canvas.Top="-26" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        <Image Tag="box" Source="/Images/red wall.png" Height="70" Width="64" Canvas.Left="1417" Canvas.Top="-19" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Top" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image Tag="box" Source="/Images/red wall.png" Height="80" Width="70" Canvas.Left="1269" Canvas.Top="-30" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Center" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image Tag="box" Source="/Images/red wall.png" Height="70" Width="70" Canvas.Left="1269" Canvas.Top="-68" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Top" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image Tag="box" Source="/Images/red wall.png" Height="78" Width="70" Canvas.Left="1268" Canvas.Top="-115" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Center" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image Tag="box" Source="/Images/red wall.png" Height="80" Width="70" Canvas.Left="1268" Canvas.Top="-147" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Center" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image Tag="box" Source="/Images/red wall.png" Height="70" Width="70" Canvas.Left="1268" Canvas.Top="-185" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Center" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image Tag="box" Source="/Images/red wall.png" Height="78" Width="70" Canvas.Left="1267" Canvas.Top="-232" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Center" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image Tag="box" Source="/Images/red wall.png" Height="70" Width="70" Canvas.Left="1219" Canvas.Top="-228" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Image Tag="box" Source="/Images/red wall.png" Height="70" Width="70" Canvas.Left="1168" Canvas.Top="-228" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        <Image Tag="box" Source="/Images/red wall.png" Height="70" Width="70" Canvas.Left="1134" Canvas.Top="-228" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        <Image Tag="box" Source="/Images/red wall.png" Height="70" Width="70" Canvas.Left="1083" Canvas.Top="-228" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        <Image Tag="box" Source="/Images/red wall.png" Height="70" Width="70" Canvas.Left="1053" Canvas.Top="-228" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        <Image Tag="box" Source="/Images/red wall.png" Height="70" Width="70" Canvas.Left="1002" Canvas.Top="-228" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        <Image Tag="box" Source="/Images/red wall.png" Height="70" Width="70" Canvas.Left="968" Canvas.Top="-228" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        <Image Tag="box" Source="/Images/red wall.png" Height="70" Width="70" Canvas.Left="917" Canvas.Top="-228" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        <Image Tag="box" Source="/Images/red wall.png" Height="70" Width="70" Canvas.Left="926" Canvas.Top="-396" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Top" ></Image>
+        <Image Tag="box" Source="/Images/red wall.png" Height="80" Width="70" Canvas.Left="926" Canvas.Top="-400" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Top" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image Tag="box" Source="/Images/red wall.png" Height="70" Width="70" Canvas.Left="926" Canvas.Top="-438" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Center" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+
+        <Image Tag="box" Source="/Images/grey wall.png" Height="70" Width="64" Canvas.Left="448" Canvas.Top="808" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" ></Image>
+        <Image Tag="box" Source="/Images/box2.jpg" Height="70" Width="70" Canvas.Left="1627" Canvas.Top="-367" HorizontalAlignment="Center" VerticalAlignment="Top" />
+        <Image Tag="box" Source="/Images/grey wall.png" Height="70" Width="64" Canvas.Left="491" Canvas.Top="808" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Top" />
+        <Image Tag="box" Source="/Images/grey wall.png" Height="70" Width="64" Canvas.Left="534" Canvas.Top="808" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Image Tag="box" Source="/Images/grey wall.png" Height="70" Width="64" Canvas.Left="573" Canvas.Top="808" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Image Tag="box" Source="/Images/grey wall.png" Height="70" Width="64" Canvas.Left="614" Canvas.Top="808" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Image Tag="box" Source="/Images/grey wall.png" Height="70" Width="64" Canvas.Left="657" Canvas.Top="808" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Image Tag="box" Source="/Images/grey wall.png" Height="70" Width="64" Canvas.Left="700" Canvas.Top="808" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Image Tag="box" Source="/Images/grey wall.png" Height="70" Width="64" Canvas.Left="741" Canvas.Top="808" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Image Tag="box" Source="/Images/grey wall.png" Height="70" Width="64" Canvas.Left="897" Canvas.Top="808" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Image Tag="box" Source="/Images/grey wall.png" Height="70" Width="64" Canvas.Left="939" Canvas.Top="808" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Image Tag="box" Source="/Images/grey wall.png" Height="70" Width="64" Canvas.Left="981" Canvas.Top="808" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Top" />
+        <Image Tag="box" Source="/Images/grey wall.png" Height="70" Width="64" Canvas.Left="1024" Canvas.Top="808" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Top" />
+        <Image Tag="box" Source="/Images/grey wall.png" Height="70" Width="64" Canvas.Left="1064" Canvas.Top="808" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Top" />
+        <Image Tag="box" Source="/Images/grey wall.png" Height="70" Width="64" Canvas.Left="1105" Canvas.Top="808" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Image Tag="box" Source="/Images/grey wall.png" Height="70" Width="64" Canvas.Left="1147" Canvas.Top="808" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Top" />
+        <Image Tag="box" Source="/Images/grey wall.png" Height="70" Width="64" Canvas.Left="1190" Canvas.Top="808" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Top" />
+        <Image Tag="box" Source="/Images/grey wall.png" Height="60" Width="59" Canvas.Left="391" Canvas.Top="942" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Top" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image Tag="box" Source="/Images/grey wall.png" Height="60" Width="59" Canvas.Left="391" Canvas.Top="979" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Top" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image Tag="box" Source="/Images/grey wall.png" Height="60" Width="59" Canvas.Left="391" Canvas.Top="1016" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Top" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image Tag="box" Source="/Images/grey wall.png" Height="60" Width="59" Canvas.Left="391" Canvas.Top="1040" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Top" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image Tag="box" Source="/Images/grey wall.png" Height="60" Width="59" Canvas.Left="391" Canvas.Top="1172" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Top" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image Tag="box" Source="/Images/grey wall.png" Height="60" Width="59" Canvas.Left="391" Canvas.Top="1209" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Top" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image Tag="box" Source="/Images/grey wall.png" Height="60" Width="59" Canvas.Left="391" Canvas.Top="1246" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Top" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image Tag="box" Source="/Images/grey wall.png" Height="60" Width="59" Canvas.Left="1112" Canvas.Top="1130" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Top" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image Tag="box" Source="/Images/grey wall.png" Height="60" Width="59" Canvas.Left="1112" Canvas.Top="1167" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Top" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image Tag="box" Source="/Images/grey wall.png" Height="60" Width="59" Canvas.Left="1112" Canvas.Top="1204" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Top" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image Tag="box" Source="/Images/grey wall.png" Height="60" Width="59" Canvas.Left="1112" Canvas.Top="1241" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Top" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image Tag="box" Source="/Images/grey wall.png" Height="60" Width="59" Canvas.Left="1112" Canvas.Top="979" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Top" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image Tag="box" Source="/Images/grey wall.png" Height="60" Width="59" Canvas.Left="1112" Canvas.Top="1016" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Top" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image Tag="box" Source="/Images/grey wall.png" Height="60" Width="59" Canvas.Left="1112" Canvas.Top="1053" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Top" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image Tag="box" Source="/Images/grey wall.png" Height="60" Width="59" Canvas.Left="1112" Canvas.Top="1090" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Top" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image Tag="box" Source="/Images/grey wall.png" Height="60" Width="59" Canvas.Left="1112" Canvas.Top="860" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Top" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image Tag="box" Source="/Images/grey wall.png" Height="70" Width="64" Canvas.Left="1228" Canvas.Top="808" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Top" />
+        <Image Tag="box" Source="/Images/grey wall.png" Height="70" Width="64" Canvas.Left="1269" Canvas.Top="808" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Top" />
+        <Image Tag="box" Source="/Images/grey wall.png" Height="70" Width="64" Canvas.Left="1312" Canvas.Top="808" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Top" />
+        <Image Tag="box" Source="/Images/grey wall.png" Height="70" Width="64" Canvas.Left="1355" Canvas.Top="808" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Top" />
+        <Image Tag="box" Source="/Images/grey wall.png" Height="70" Width="64" Canvas.Left="1396" Canvas.Top="808" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Top" />
+        <Image Tag="box" Source="/Images/grey wall.png" Height="60" Width="59" Canvas.Left="1400" Canvas.Top="699" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Top" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image Tag="box" Source="/Images/grey wall.png" Height="60" Width="59" Canvas.Left="1400" Canvas.Top="736" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Top" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image Tag="box" Source="/Images/grey wall.png" Height="60" Width="59" Canvas.Left="1400" Canvas.Top="773" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Top" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image Tag="box" Source="/Images/grey wall.png" Height="60" Width="59" Canvas.Left="1400" Canvas.Top="810" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Top" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image Tag="box" Source="/Images/grey wall.png" Height="60" Width="59" Canvas.Left="1399" Canvas.Top="585" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Top" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image Tag="box" Source="/Images/grey wall.png" Height="60" Width="59" Canvas.Left="1399" Canvas.Top="622" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Top" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image Tag="box" Source="/Images/grey wall.png" Height="60" Width="59" Canvas.Left="1399" Canvas.Top="659" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Top" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image Tag="box" Source="/Images/grey wall.png" Height="60" Width="59" Canvas.Left="1399" Canvas.Top="696" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Top" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image Tag="box" Source="/Images/box.png" Height="70" Width="70" Canvas.Left="-60" Canvas.Top="399" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        <Image Tag="box" Source="/Images/box.png" Height="57" Width="58" Canvas.Left="1400" Canvas.Top="541" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Image Tag="box" Source="/Images/box.png" Height="57" Width="58" Canvas.Left="1456" Canvas.Top="541" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        <Image Tag="box" Source="/Images/box.png" Height="57" Width="58" Canvas.Left="1642" Canvas.Top="541" HorizontalAlignment="Left" VerticalAlignment="Center" />
 
     </Canvas>
 

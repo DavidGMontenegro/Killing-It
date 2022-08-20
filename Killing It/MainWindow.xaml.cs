@@ -21,12 +21,12 @@ namespace Killing_It
 
         Random rand = new Random();
         bool goUp, goLeft, goRight, goDown;
-        int playerSpeed = 8;
-        int backgroundSpeed = 7;
-        double zombieSpeed = 1;
+        int playerSpeed = 4;
+        int backgroundSpeed = 10;
+        double zombieSpeed = 2;
         int ammo = 30;
         int score = 0;
-        int actualAllowedZombies = 3;
+        int actualAllowedZombies = 5;
         int zombieNumber = 0;
         int spawnedAmmo = 0;
 
@@ -79,6 +79,7 @@ namespace Killing_It
                             if (boxRect.IntersectsWith(playerRect))
                             {
                                 Canvas.SetLeft(player, Canvas.GetLeft(player) + 2 * playerSpeed);
+                                moveBackground("left");
                                 break;
                             }
                         }
@@ -103,6 +104,7 @@ namespace Killing_It
                             if (boxRect.IntersectsWith(playerRect))
                             {
                                 Canvas.SetLeft(player, Canvas.GetLeft(player) - 2 * playerSpeed);
+                                moveBackground("right");
                                 break;
                             }
                         }
@@ -129,6 +131,7 @@ namespace Killing_It
                             if (boxRect.IntersectsWith(playerRect))
                             {
                                 Canvas.SetTop(player, Canvas.GetTop(player) + 2 * playerSpeed);
+                                moveBackground("up");
                                 break;
                             }
                         }
@@ -155,6 +158,7 @@ namespace Killing_It
                             if (boxRect.IntersectsWith(playerRect))
                             {
                                 Canvas.SetTop(player, Canvas.GetTop(player) - 2 * playerSpeed);
+                                moveBackground("down");
                                 break;
                             }
                         }
@@ -302,8 +306,8 @@ namespace Killing_It
             zombie.Height = 60;
             zombie.Width = 60;
 
-            posX = rand.Next(0, (int)backgroundCanvas.ActualWidth);
-            posY = rand.Next(0, (int)backgroundCanvas.ActualHeight);
+            posX = rand.Next(0, (int)backgroundCanvas.ActualWidth + (int)(background.ActualWidth - backgroundCanvas.ActualWidth) / 2);
+            posY = rand.Next(0, (int)backgroundCanvas.ActualHeight + (int)(background.ActualHeight - backgroundCanvas.ActualHeight) / 2);
 
             Canvas.SetLeft(zombie, posX);
             Canvas.SetTop(zombie, posY);
@@ -339,7 +343,7 @@ namespace Killing_It
             switch (direction)
             {
                 case "up":
-                    if (Canvas.GetTop(background) >= -315)
+                    if (Canvas.GetTop(background) >= (backgroundCanvas.ActualHeight - background.ActualHeight))
                     {
                         Canvas.SetTop(background, Canvas.GetTop(background) - backgroundSpeed);
                         foreach (var x in backgroundCanvas.Children.OfType<Image>())
@@ -381,7 +385,7 @@ namespace Killing_It
                     break;
 
                 case "left":
-                    if (Canvas.GetLeft(background) > -350)
+                    if (Canvas.GetLeft(background) > (backgroundCanvas.ActualWidth - background.ActualWidth))
                     {
                         Canvas.SetLeft(background, Canvas.GetLeft(background) - backgroundSpeed);
                         foreach (var x in backgroundCanvas.Children.OfType<Image>())
