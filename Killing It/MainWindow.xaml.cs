@@ -39,9 +39,7 @@ namespace Killing_It
         {
             InitializeComponent();
             spawnZombies();
-            spawnZombies();
-            spawnZombies();
-            zombieNumber += 3;
+            zombieNumber += 1;
 
             gameTimer.Tick += GameTimerEvent;
             gameTimer.Interval = TimeSpan.FromMilliseconds(20);
@@ -94,7 +92,7 @@ namespace Killing_It
                     if (x.Tag.Equals("ammo box"))
                     {
                         Rect playerRect = new Rect(Canvas.GetLeft(player), Canvas.GetTop(player), player.Width, player.Height);
-                        Rect ammoBoxRect = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
+                        Rect ammoBoxRect = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width - 10, x.Height - 10);
 
                         if (playerRect.IntersectsWith(ammoBoxRect))
                         {
@@ -110,8 +108,8 @@ namespace Killing_It
                     }
                     else if (x.Tag.Equals("zombie"))
                     {
-                        Rect playerRect = new Rect(Canvas.GetLeft(player), Canvas.GetTop(player), player.Width, player.Height);
-                        Rect zombieRect = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
+                        Rect playerRect = new Rect(Canvas.GetLeft(player), Canvas.GetTop(player), player.Width - 10, player.Height - 10);
+                        Rect zombieRect = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width - 20, x.Height - 20);
 
                         if (playerRect.IntersectsWith(zombieRect))
                         {
@@ -157,7 +155,7 @@ namespace Killing_It
                     {
                         foreach (var y in backgroundCanvas.Children.OfType<Image>())
                         {
-                            if (y.Tag != null)
+                            if (y.Tag != null && x.Tag != null)
                             {
                                 if (y.Tag.Equals("zombie"))
                                 {
@@ -400,7 +398,7 @@ namespace Killing_It
             RotateTransform rotateTransform = new RotateTransform();
             rotateTransform.Angle = angleBetween;
             player.RenderTransform = rotateTransform;
-
+            bullet.angleBetween = angleBetween;
 
             bullet.bulletLeft = (int)(Canvas.GetLeft(player) + (player.ActualWidth / 2));
             bullet.bulletTop = (int)(Canvas.GetTop(player) + (player.ActualHeight / 2));

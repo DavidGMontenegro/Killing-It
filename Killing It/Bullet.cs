@@ -14,6 +14,7 @@ namespace Killing_It
         public int mousePosX, mousePosY;
         public int bulletLeft, bulletTop;
         Canvas canvas;
+        public double angleBetween = 0;
 
 
         private int speed = 4;
@@ -27,12 +28,17 @@ namespace Killing_It
             this.canvas = canvas;
             bullet.Source = new BitmapImage(new Uri("\\Images\\bullet.png", UriKind.RelativeOrAbsolute));
 
-            bullet.Height = 30;
-            bullet.Width = 30;
+            bullet.Height = 10;
+            bullet.Width = 10;
+            bullet.RenderTransformOrigin = new Point(0.5, 0.5);
 
             Canvas.SetLeft(bullet, bulletLeft);
             Canvas.SetTop(bullet, bulletTop);
             bullet.Tag = "bullet";
+
+            RotateTransform rotateTransform = new RotateTransform();
+            rotateTransform.Angle = angleBetween;
+            bullet.RenderTransform = rotateTransform;
 
             canvas.Children.Add(bullet);
 
@@ -47,36 +53,22 @@ namespace Killing_It
             RotateTransform rotateTransform = new RotateTransform();
             if (Canvas.GetLeft(bullet) < mousePosX)
             {
-                rotateTransform.Angle = 0;
                 Canvas.SetLeft(bullet, Canvas.GetLeft(bullet) + speed);
-                bullet.RenderTransform = rotateTransform;
             }
 
             if (Canvas.GetLeft(bullet) > mousePosX)
             {
-                rotateTransform.Angle = 0;
                 Canvas.SetLeft(bullet, Canvas.GetLeft(bullet) - speed);
-                bullet.RenderTransform = rotateTransform;
-                rotateTransform.Angle = 180;
-                bullet.RenderTransform = rotateTransform;
             }
 
             if (Canvas.GetTop(bullet) > mousePosY)
             {
-                rotateTransform.Angle = 0;
                 Canvas.SetTop(bullet, Canvas.GetTop(bullet) - speed);
-                bullet.RenderTransform = rotateTransform;
-                rotateTransform.Angle = -90;
-                bullet.RenderTransform = rotateTransform;
             }
 
             if (Canvas.GetTop(bullet) < mousePosY)
             {
-                rotateTransform.Angle = 0;
                 Canvas.SetTop(bullet, Canvas.GetTop(bullet) + speed);
-                bullet.RenderTransform = rotateTransform;
-                rotateTransform.Angle = 90;
-                bullet.RenderTransform = rotateTransform;
             }
 
             if (Canvas.GetTop(bullet) < 0 || Canvas.GetTop(bullet) + bullet.ActualHeight > canvas.ActualHeight ||
