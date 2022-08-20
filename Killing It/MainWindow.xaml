@@ -6,24 +6,26 @@
         xmlns:local="clr-namespace:Killing_It"
         mc:Ignorable="d"
         Title="MainWindow" 
-        Height="500" Width="700" ResizeMode="NoResize"
+        Height="700" Width="900" ResizeMode="NoResize"
         KeyDown="Window_KeyDown" KeyUp="Window_KeyUp" MouseLeftButtonUp="Window_MouseLeftButtonUp">
 
-    <Canvas Name="backgroundCanvas" Height="500" Width="700">
-        <Image Name="background" Source="/Images/background.png" VerticalAlignment="Center" HorizontalAlignment="Left" Canvas.Left="-137" Canvas.Top="-142"/>
-        <Image Name="player" Tag="player" RenderTransformOrigin=".5,.5" Source="/Images/player.gif" VerticalAlignment="Center" HorizontalAlignment="Left" Canvas.Left="314" Canvas.Top="210" Height="63" Width="71"></Image>
-        <Image Tag="box" Source="/Images/box.png" Height="70" Width="70" Canvas.Left="-74" Canvas.Top="10" ></Image>
+    <Canvas Name="backgroundCanvas" Height="700" Width="900">
+        <Image Name="background" Source="/Images/background.png" VerticalAlignment="Top" HorizontalAlignment="Left" Canvas.Left="-842" Canvas.Top="-474" Height="1816" Width="2584" Stretch="Fill"/>
+        <Image Name="player" Tag="player" RenderTransformOrigin=".5,.5" Source="/Images/player.gif" VerticalAlignment="Center" HorizontalAlignment="Left" Canvas.Left="314" Canvas.Top="210" Height="60" Width="60"></Image>
+        <Image Tag="box" Source="/Images/box.png" Height="70" Width="70" Canvas.Left="-40" Canvas.Top="22" ></Image>
         <Image Tag="box" Source="/Images/box.png" Height="70" Width="70" Canvas.Left="350" Canvas.Top="-43" HorizontalAlignment="Left" VerticalAlignment="Center" ></Image>
         <Image Tag="box" Source="/Images/box2.jpg" Height="70" Width="70" Canvas.Left="657" Canvas.Top="469" ></Image>
-        <Image Tag="box" Source="/Images/box2.jpg" Height="70" Width="70" Canvas.Left="10" Canvas.Top="469" ></Image>
+        <Image Tag="box" Source="/Images/box2.jpg" Height="70" Width="70" Canvas.Left="10" Canvas.Top="469" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
         <Image Tag="box" Source="/Images/box2.jpg" Height="70" Width="70" Canvas.Left="657" Canvas.Top="85" ></Image>
-        <Rectangle Fill="DarkOliveGreen" Width="700" Height="45"></Rectangle>
-        <Image Source="/Images/heart.png" Height="30" Width="32" Canvas.Left="444" Canvas.Top="7" HorizontalAlignment="Left" VerticalAlignment="Top" ></Image>
-        <Label Name="AmmoLabel" Foreground="White" Content="30" Canvas.Left="65" FontSize="30" FontFamily="Bernard MT" HorizontalContentAlignment="Right" Height="38" Width="43" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Top="3"/>
-        <Label Name="ScoreLabel" Foreground="White" Content="Score : 0" FontSize="30" FontFamily="Bernard MT" HorizontalContentAlignment="Center" Height="38" Width="auto" VerticalAlignment="Top" Canvas.Left="227" HorizontalAlignment="Center"/>
-        <Image Source="/Images/ammo.png" Height="30" Width="30" Canvas.Left="35" Canvas.Top="10" HorizontalAlignment="Center" VerticalAlignment="Top" ></Image>
-        <Image Source="/Images/golden frame.png"  Width="122" Height="48" Stretch="Fill" Canvas.Left="10" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Top="-2"/>
-        <ProgressBar Name="liveProgressBar" Height="24" Width="199" Canvas.Left="479" Canvas.Top="10" HorizontalAlignment="Left" VerticalAlignment="Center" Background="Wheat" Foreground="#3a260e" Minimum="0" Maximum="100" Value="100"/>
+        <Rectangle Fill="DarkOliveGreen" Width="200" Height="35" Canvas.Left="314" Canvas.Top="13" HorizontalAlignment="Center" VerticalAlignment="Top"></Rectangle>
+        <Image Source="/Images/heart.png" Height="30" Width="32" Canvas.Left="622" Canvas.Top="7" HorizontalAlignment="Left" VerticalAlignment="Center" ></Image>
+        <Label Name="AmmoLabel" Foreground="White" Content="30" Canvas.Left="78" FontSize="30" FontFamily="Bernard MT" HorizontalContentAlignment="Right" Height="40" Width="46" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Top="10"/>
+        <Label Name="ScoreLabel" Foreground="White" Content="Score : 0" FontSize="30" FontFamily="Bernard MT" HorizontalContentAlignment="Center" Height="38" Width="auto" VerticalAlignment="Top" Canvas.Left="353" HorizontalAlignment="Center" Canvas.Top="6"/>
+        <Image Source="/Images/ammo.png" Height="30" Width="30" Canvas.Left="45" Canvas.Top="17" HorizontalAlignment="Left" VerticalAlignment="Top" ></Image>
+        <Image Source="/Images/golden frame.png"  Width="142" Height="48" Stretch="Fill" Canvas.Left="10" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Top="7"/>
+        <ProgressBar Name="liveProgressBar" Height="30" Width="214" Canvas.Left="657" Canvas.Top="7" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Wheat" Foreground="#3a260e" Minimum="0" Maximum="100" Value="100"/>
+        <Image Tag="box" Source="/Images/box2.jpg" Height="70" Width="70" Canvas.Left="587" Canvas.Top="85" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        <Image Tag="box" Source="/Images/box2.jpg" Height="70" Width="70" Canvas.Left="10" Canvas.Top="399" HorizontalAlignment="Left" VerticalAlignment="Center" />
 
     </Canvas>
 

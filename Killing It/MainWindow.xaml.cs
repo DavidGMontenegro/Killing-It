@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -23,8 +21,8 @@ namespace Killing_It
 
         Random rand = new Random();
         bool goUp, goLeft, goRight, goDown;
-        string looking = "right";
-        int playerSpeed = 5;
+        int playerSpeed = 8;
+        int backgroundSpeed = 7;
         double zombieSpeed = 1;
         int ammo = 30;
         int score = 0;
@@ -33,6 +31,7 @@ namespace Killing_It
         int spawnedAmmo = 0;
 
         List<Image> toDelete = new List<Image>();
+        List<Rect> boxObstacles = new List<Rect>();
 
 
         public MainWindow()
@@ -50,39 +49,117 @@ namespace Killing_It
 
         private void GameTimerEvent(object sender, EventArgs e)
         {
-
             AmmoLabel.Content = ammo;
             ScoreLabel.Content = "Score: " + score;
 
-            if (goLeft == true && Canvas.GetLeft(player) > 0)
+            if (liveProgressBar.Value == 0)
+            {
+                gameTimer.Stop();
+                MessageBoxResult result = MessageBox.Show("  GAME OVER  ", "Game over", MessageBoxButton.OK);
+                return;
+            }
+
+            if (goLeft == true && Canvas.GetLeft(player) > Canvas.GetLeft(background))
             {
                 Canvas.SetLeft(player, Canvas.GetLeft(player) - playerSpeed);
                 rotateTransform.Angle = 0;
                 player.RenderTransform = rotateTransform;
                 rotateTransform.Angle = 180;
                 player.RenderTransform = rotateTransform;
+                moveBackground("right");
+
+                foreach (var x in backgroundCanvas.Children.OfType<Image>())
+                {
+                    if (x.Tag != null)
+                    {
+                        if (x.Tag.Equals("box"))
+                        {
+                            Rect boxRect = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
+                            Rect playerRect = new Rect(Canvas.GetLeft(player), Canvas.GetTop(player), player.Width, player.Height);
+                            if (boxRect.IntersectsWith(playerRect))
+                            {
+                                Canvas.SetLeft(player, Canvas.GetLeft(player) + 2 * playerSpeed);
+                                break;
+                            }
+                        }
+                    }
+                }
             }
-            if (goRight == true && Canvas.GetLeft(player) + player.ActualWidth < backgroundCanvas.ActualWidth)
+            if (goRight == true && Canvas.GetLeft(player) + player.ActualWidth < Canvas.GetLeft(background) + background.ActualWidth)
             {
                 Canvas.SetLeft(player, Canvas.GetLeft(player) + playerSpeed);
                 rotateTransform.Angle = 0;
                 player.RenderTransform = rotateTransform;
+                moveBackground("left");
+
+                foreach (var x in backgroundCanvas.Children.OfType<Image>())
+                {
+                    if (x.Tag != null)
+                    {
+                        if (x.Tag.Equals("box"))
+                        {
+                            Rect boxRect = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
+                            Rect playerRect = new Rect(Canvas.GetLeft(player), Canvas.GetTop(player), player.Width, player.Height);
+                            if (boxRect.IntersectsWith(playerRect))
+                            {
+                                Canvas.SetLeft(player, Canvas.GetLeft(player) - 2 * playerSpeed);
+                                break;
+                            }
+                        }
+                    }
+                }
             }
-            if (goUp == true && Canvas.GetTop(player) > 45)
+            if (goUp == true && Canvas.GetTop(player) > Canvas.GetTop(background))
             {
                 Canvas.SetTop(player, Canvas.GetTop(player) - playerSpeed);
                 rotateTransform.Angle = 0;
                 player.RenderTransform = rotateTransform;
                 rotateTransform.Angle = -90;
                 player.RenderTransform = rotateTransform;
+                moveBackground("down");
+
+                foreach (var x in backgroundCanvas.Children.OfType<Image>())
+                {
+                    if (x.Tag != null)
+                    {
+                        if (x.Tag.Equals("box"))
+                        {
+                            Rect boxRect = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
+                            Rect playerRect = new Rect(Canvas.GetLeft(player), Canvas.GetTop(player), player.Width, player.Height);
+                            if (boxRect.IntersectsWith(playerRect))
+                            {
+                                Canvas.SetTop(player, Canvas.GetTop(player) + 2 * playerSpeed);
+                                break;
+                            }
+                        }
+                    }
+                }
             }
-            if (goDown == true && Canvas.GetTop(player) + player.Height < backgroundCanvas.ActualHeight)
+            if (goDown == true && Canvas.GetTop(player) + player.Height < Canvas.GetTop(background) + background.ActualHeight)
             {
+                Canvas.SetTop(player, Canvas.GetTop(player) + playerSpeed);
                 rotateTransform.Angle = 0;
                 player.RenderTransform = rotateTransform;
-                rotateTransform.Angle = 90;
+                rotateTransform.Angle = 090;
                 player.RenderTransform = rotateTransform;
-                Canvas.SetTop(player, Canvas.GetTop(player) + playerSpeed);
+                moveBackground("up");
+
+                foreach (var x in backgroundCanvas.Children.OfType<Image>())
+                {
+                    if (x.Tag != null)
+                    {
+                        if (x.Tag.Equals("box"))
+                        {
+                            Rect boxRect = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
+                            Rect playerRect = new Rect(Canvas.GetLeft(player), Canvas.GetTop(player), player.Width, player.Height);
+                            if (boxRect.IntersectsWith(playerRect))
+                            {
+                                Canvas.SetTop(player, Canvas.GetTop(player) - 2 * playerSpeed);
+                                break;
+                            }
+                        }
+                    }
+                }
             }
 
             foreach (var x in backgroundCanvas.Children.OfType<Image>())
@@ -256,9 +333,9 @@ namespace Killing_It
         }
 
 
-        /*
         private void moveBackground(string direction)
         {
+
             switch (direction)
             {
                 case "up":
@@ -318,7 +395,6 @@ namespace Killing_It
                     break;
             }
         }
-        */
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
@@ -326,22 +402,18 @@ namespace Killing_It
             {
                 case Key.W:
                     goUp = true;
-                    looking = "up";
                     break;
 
                 case Key.S:
                     goDown = true;
-                    looking = "down";
                     break;
 
                 case Key.A:
                     goLeft = true;
-                    looking = "left";
                     break;
 
                 case Key.D:
                     goRight = true;
-                    looking = "right";
                     break;
             }
         }
@@ -404,7 +476,5 @@ namespace Killing_It
             bullet.bulletTop = (int)(Canvas.GetTop(player) + (player.ActualHeight / 2));
             bullet.MakeBullet(backgroundCanvas);
         }
-
-
     }
 }
