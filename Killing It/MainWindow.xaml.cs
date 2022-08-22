@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
+using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -22,16 +25,16 @@ namespace Killing_It
         Random rand = new Random();
         bool goUp, goLeft, goRight, goDown;
         int playerSpeed = 4;
-        int backgroundSpeed = 10;
+        int backgroundSpeed = 8;
         double zombieSpeed = 2;
-        int ammo = 30;
+        int ammo = 40;
         int score = 0;
         int actualAllowedZombies = 5;
         int zombieNumber = 0;
         int spawnedAmmo = 0;
+        int spawnedLiveKits = 0;
 
         List<Image> toDelete = new List<Image>();
-        List<Rect> boxObstacles = new List<Rect>();
 
 
         public MainWindow()
@@ -43,8 +46,6 @@ namespace Killing_It
             gameTimer.Tick += GameTimerEvent;
             gameTimer.Interval = TimeSpan.FromMilliseconds(20);
             gameTimer.Start();
-
-
         }
 
         private void GameTimerEvent(object sender, EventArgs e)
@@ -58,6 +59,11 @@ namespace Killing_It
                 MessageBoxResult result = MessageBox.Show("  GAME OVER  ", "Game over", MessageBoxButton.OK);
                 return;
             }
+            else if (liveProgressBar.Value < 75 && spawnedLiveKits < 4)
+            {
+                spawnLive();
+
+            }
 
             if (goLeft == true && Canvas.GetLeft(player) > Canvas.GetLeft(background))
             {
@@ -66,7 +72,10 @@ namespace Killing_It
                 player.RenderTransform = rotateTransform;
                 rotateTransform.Angle = 180;
                 player.RenderTransform = rotateTransform;
-                moveBackground("right");
+                if (!moveBackground("right"))
+                {
+                    Canvas.SetLeft(player, Canvas.GetLeft(player) - playerSpeed);
+                }
 
                 foreach (var x in backgroundCanvas.Children.OfType<Image>())
                 {
@@ -91,7 +100,10 @@ namespace Killing_It
                 Canvas.SetLeft(player, Canvas.GetLeft(player) + playerSpeed);
                 rotateTransform.Angle = 0;
                 player.RenderTransform = rotateTransform;
-                moveBackground("left");
+                if (!moveBackground("left"))
+                {
+                    Canvas.SetLeft(player, Canvas.GetLeft(player) + playerSpeed);
+                }
 
                 foreach (var x in backgroundCanvas.Children.OfType<Image>())
                 {
@@ -118,7 +130,10 @@ namespace Killing_It
                 player.RenderTransform = rotateTransform;
                 rotateTransform.Angle = -90;
                 player.RenderTransform = rotateTransform;
-                moveBackground("down");
+                if (!moveBackground("down"))
+                {
+                    Canvas.SetTop(player, Canvas.GetTop(player) - playerSpeed);
+                }
 
                 foreach (var x in backgroundCanvas.Children.OfType<Image>())
                 {
@@ -145,7 +160,10 @@ namespace Killing_It
                 player.RenderTransform = rotateTransform;
                 rotateTransform.Angle = 090;
                 player.RenderTransform = rotateTransform;
-                moveBackground("up");
+                if (!moveBackground("up"))
+                {
+                    Canvas.SetTop(player, Canvas.GetTop(player) + playerSpeed);
+                }
 
                 foreach (var x in backgroundCanvas.Children.OfType<Image>())
                 {
@@ -179,8 +197,21 @@ namespace Killing_It
                         {
                             x.Tag = null;
                             toDelete.Add(x);
-                            ammo += 5;
+                            ammo += 15;
                             spawnedAmmo--;
+                        }
+                    }
+                    else if (x.Tag.Equals("first aid kit"))
+                    {
+                        Rect playerRect = new Rect(Canvas.GetLeft(player), Canvas.GetTop(player), player.Width, player.Height);
+                        Rect kitRect = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width - 10, x.Height - 10);
+
+                        if (playerRect.IntersectsWith(kitRect))
+                        {
+                            x.Tag = null;
+                            toDelete.Add(x);
+                            liveProgressBar.Value += 10;
+                            spawnedLiveKits--;
                         }
                     }
                     else if (x.Tag.Equals("blood stain"))
@@ -203,6 +234,21 @@ namespace Killing_It
                             rotateTransform.Angle = 0;
                             Canvas.SetLeft(x, Canvas.GetLeft(x) + zombieSpeed);
                             x.RenderTransform = rotateTransform;
+                            foreach (var box in backgroundCanvas.Children.OfType<Image>())
+                            {
+                                if (box.Tag != null)
+                                {
+                                    if (box.Tag.Equals("box"))
+                                    {
+                                        Rect boxRect = new Rect(Canvas.GetLeft(box), Canvas.GetTop(box), box.Width, box.Height);
+                                        if (boxRect.IntersectsWith(zombieRect))
+                                        {
+                                            Canvas.SetLeft(x, Canvas.GetLeft(x) - 3 * zombieSpeed);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
                         }
 
                         if (Canvas.GetLeft(x) > Canvas.GetLeft(player))
@@ -212,6 +258,21 @@ namespace Killing_It
                             x.RenderTransform = rotateTransform;
                             rotateTransform.Angle = 180;
                             x.RenderTransform = rotateTransform;
+                            foreach (var box in backgroundCanvas.Children.OfType<Image>())
+                            {
+                                if (box.Tag != null)
+                                {
+                                    if (box.Tag.Equals("box"))
+                                    {
+                                        Rect boxRect = new Rect(Canvas.GetLeft(box), Canvas.GetTop(box), box.Width, box.Height);
+                                        if (boxRect.IntersectsWith(zombieRect))
+                                        {
+                                            Canvas.SetLeft(x, Canvas.GetLeft(x) + 3 * zombieSpeed);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
                         }
 
                         if (Canvas.GetTop(x) > Canvas.GetTop(player))
@@ -221,6 +282,21 @@ namespace Killing_It
                             x.RenderTransform = rotateTransform;
                             rotateTransform.Angle = -90;
                             x.RenderTransform = rotateTransform;
+                            foreach (var box in backgroundCanvas.Children.OfType<Image>())
+                            {
+                                if (box.Tag != null)
+                                {
+                                    if (box.Tag.Equals("box"))
+                                    {
+                                        Rect boxRect = new Rect(Canvas.GetLeft(box), Canvas.GetTop(box), box.Width, box.Height);
+                                        if (boxRect.IntersectsWith(zombieRect))
+                                        {
+                                            Canvas.SetTop(x, Canvas.GetTop(x) + 3 * zombieSpeed);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
                         }
 
                         if (Canvas.GetTop(x) < Canvas.GetTop(player))
@@ -230,6 +306,21 @@ namespace Killing_It
                             x.RenderTransform = rotateTransform;
                             rotateTransform.Angle = 90;
                             x.RenderTransform = rotateTransform;
+                            foreach (var box in backgroundCanvas.Children.OfType<Image>())
+                            {
+                                if (box.Tag != null)
+                                {
+                                    if (box.Tag.Equals("box"))
+                                    {
+                                        Rect boxRect = new Rect(Canvas.GetLeft(box), Canvas.GetTop(box), box.Width, box.Height);
+                                        if (boxRect.IntersectsWith(zombieRect))
+                                        {
+                                            Canvas.SetLeft(x, Canvas.GetLeft(x) - 3 * zombieSpeed);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                     else if (x.Tag.Equals("bullet"))
@@ -255,12 +346,22 @@ namespace Killing_It
                                         toDelete.Add(x);
                                     }
                                 }
-                            }
+                                else if (y.Tag.Equals("box"))
+                                {
+                                    Rect boxRect = new Rect(Canvas.GetLeft(y), Canvas.GetTop(y), y.Width, y.Height);
+                                    Rect bulletRec = new Rect(Canvas.GetLeft(x), Canvas.GetTop(x), x.Width, x.Height);
 
+                                    if (bulletRec.IntersectsWith(boxRect))
+                                    {
+                                        x.Tag = null;
+                                        toDelete.Add(x);
+                                    }
+                                }
+
+                            }
                         }
                     }
                 }
-
             }
 
             int numToDelete = toDelete.Count;
@@ -273,7 +374,10 @@ namespace Killing_It
                         if (zombieNumber < actualAllowedZombies)
                         {
                             spawnZombies();
-                            zombieNumber++;
+                            spawnZombies();
+                            spawnZombies();
+                            spawnZombies();
+                            zombieNumber += 4;
                         }
 
                         if (toDelete[i].Opacity == 0)
@@ -288,7 +392,7 @@ namespace Killing_It
                 }
             }
 
-            if (score / 3 > actualAllowedZombies)
+            if (score / 2 > actualAllowedZombies)
             {
                 actualAllowedZombies += 1;
             }
@@ -306,8 +410,12 @@ namespace Killing_It
             zombie.Height = 60;
             zombie.Width = 60;
 
-            posX = rand.Next(0, (int)backgroundCanvas.ActualWidth + (int)(background.ActualWidth - backgroundCanvas.ActualWidth) / 2);
-            posY = rand.Next(0, (int)backgroundCanvas.ActualHeight + (int)(background.ActualHeight - backgroundCanvas.ActualHeight) / 2);
+            do
+            {
+                posX = rand.Next(0, (int)backgroundCanvas.ActualWidth);
+                posY = rand.Next(0, (int)backgroundCanvas.ActualHeight);
+            } while (checkSpawnPoint(posX, posY, zombie));
+
 
             Canvas.SetLeft(zombie, posX);
             Canvas.SetTop(zombie, posY);
@@ -326,9 +434,11 @@ namespace Killing_It
             ammoBox.Height = 40;
             ammoBox.Width = 40;
 
-            posX = rand.Next(0, (int)backgroundCanvas.ActualWidth - (int)ammoBox.ActualWidth);
-            posY = rand.Next(0, (int)backgroundCanvas.ActualHeight - (int)ammoBox.ActualWidth);
-
+            do
+            {
+                posX = rand.Next(0, (int)backgroundCanvas.ActualWidth);
+                posY = rand.Next(0, (int)backgroundCanvas.ActualHeight);
+            } while (checkSpawnPoint(posX, posY, ammoBox));
             Canvas.SetLeft(ammoBox, posX);
             Canvas.SetTop(ammoBox, posY);
 
@@ -336,8 +446,31 @@ namespace Killing_It
             spawnedAmmo++;
         }
 
+        private void spawnLive()
+        {
+            Image live = new Image();
+            int posX, posY;
 
-        private void moveBackground(string direction)
+            live.Tag = "first aid kit";
+            live.Source = new BitmapImage(new Uri("\\Images\\first aid kit.png", UriKind.RelativeOrAbsolute));
+
+            live.Height = 40;
+            live.Width = 40;
+
+            do
+            {
+                posX = rand.Next(0, (int)backgroundCanvas.ActualWidth);
+                posY = rand.Next(0, (int)backgroundCanvas.ActualHeight);
+            } while (checkSpawnPoint(posX, posY, live));
+            Canvas.SetLeft(live, posX);
+            Canvas.SetTop(live, posY);
+
+            backgroundCanvas.Children.Add(live);
+            spawnedLiveKits++;
+        }
+
+
+        private bool moveBackground(string direction)
         {
 
             switch (direction)
@@ -348,13 +481,17 @@ namespace Killing_It
                         Canvas.SetTop(background, Canvas.GetTop(background) - backgroundSpeed);
                         foreach (var x in backgroundCanvas.Children.OfType<Image>())
                         {
-                            if (x.Tag != null && (x.Tag.Equals("box") || x.Tag.Equals("ammoBox") || x.Tag.Equals("bullet") || x.Tag.Equals("zombie") || x.Tag.Equals("blood stain")))
+                            if (x.Tag != null && (x.Tag.Equals("box") || x.Tag.Equals("ammo box") || x.Tag.Equals("zombie") || x.Tag.Equals("first aid kit") || x.Tag.Equals("blood stain")))
                             {
                                 Canvas.SetTop(x, Canvas.GetTop(x) - backgroundSpeed);
                             }
                         }
+                        return true;
                     }
-                    break;
+                    else
+                    {
+                        return false;
+                    }
 
                 case "down":
                     if (Canvas.GetTop(background) <= -2.5)
@@ -362,13 +499,17 @@ namespace Killing_It
                         Canvas.SetTop(background, Canvas.GetTop(background) + backgroundSpeed);
                         foreach (var x in backgroundCanvas.Children.OfType<Image>())
                         {
-                            if (x.Tag != null && (x.Tag.Equals("box") || x.Tag.Equals("ammoBox") || x.Tag.Equals("bullet") || x.Tag.Equals("zombie") || x.Tag.Equals("blood stain")))
+                            if (x.Tag != null && (x.Tag.Equals("box") || x.Tag.Equals("ammo box") || x.Tag.Equals("zombie") || x.Tag.Equals("first aid kit") || x.Tag.Equals("blood stain")))
                             {
                                 Canvas.SetTop(x, Canvas.GetTop(x) + backgroundSpeed);
                             }
                         }
+                        return true;
                     }
-                    break;
+                    else
+                    {
+                        return false;
+                    }
 
                 case "right":
                     if (Canvas.GetLeft(background) < -2.5)
@@ -376,13 +517,17 @@ namespace Killing_It
                         Canvas.SetLeft(background, Canvas.GetLeft(background) + backgroundSpeed);
                         foreach (var x in backgroundCanvas.Children.OfType<Image>())
                         {
-                            if (x.Tag != null && (x.Tag.Equals("box") || x.Tag.Equals("ammoBox") || x.Tag.Equals("bullet") || x.Tag.Equals("zombie") || x.Tag.Equals("blood stain")))
+                            if (x.Tag != null && (x.Tag.Equals("box") || x.Tag.Equals("ammo box") || x.Tag.Equals("zombie") || x.Tag.Equals("first aid kit") || x.Tag.Equals("blood stain")))
                             {
                                 Canvas.SetLeft(x, Canvas.GetLeft(x) + backgroundSpeed);
                             }
                         }
+                        return true;
                     }
-                    break;
+                    else
+                    {
+                        return false;
+                    }
 
                 case "left":
                     if (Canvas.GetLeft(background) > (backgroundCanvas.ActualWidth - background.ActualWidth))
@@ -390,14 +535,19 @@ namespace Killing_It
                         Canvas.SetLeft(background, Canvas.GetLeft(background) - backgroundSpeed);
                         foreach (var x in backgroundCanvas.Children.OfType<Image>())
                         {
-                            if (x.Tag != null && (x.Tag.Equals("box") || x.Tag.Equals("ammoBox") || x.Tag.Equals("bullet") || x.Tag.Equals("zombie") || x.Tag.Equals("blood stain")))
+                            if (x.Tag != null && (x.Tag.Equals("box") || x.Tag.Equals("ammo box") || x.Tag.Equals("zombie") || x.Tag.Equals("first aid kit") || x.Tag.Equals("blood stain")))
                             {
                                 Canvas.SetLeft(x, Canvas.GetLeft(x) - backgroundSpeed);
                             }
                         }
+                        return true;
                     }
-                    break;
+                    else
+                    {
+                        return false;
+                    }
             }
+            return false;
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -453,8 +603,9 @@ namespace Killing_It
                 Shoot((int)mousePosition.X, (int)mousePosition.Y);
             }
 
-            if (ammo < 15 && spawnedAmmo < 4)
+            if (ammo < 15 && spawnedAmmo < 6)
             {
+                spawnAmmo();
                 spawnAmmo();
             }
         }
@@ -479,6 +630,28 @@ namespace Killing_It
             bullet.bulletLeft = (int)(Canvas.GetLeft(player) + (player.ActualWidth / 2));
             bullet.bulletTop = (int)(Canvas.GetTop(player) + (player.ActualHeight / 2));
             bullet.MakeBullet(backgroundCanvas);
+        }
+
+        public bool checkSpawnPoint(int posX, int posY, Image toCheck)
+        {
+            Rect toCheckRect = new Rect(posX, posY, toCheck.Width, toCheck.Height);
+            Rect playerRect = new Rect(Canvas.GetLeft(player), Canvas.GetTop(player), player.Width, player.Height);
+            foreach (var box in backgroundCanvas.Children.OfType<Image>())
+            {
+                if (box.Tag != null)
+                {
+                    Rect bulletRec = new Rect(Canvas.GetLeft(box), Canvas.GetTop(box), box.Width, box.Height);
+                    if (box.Tag.Equals("box"))
+                    {
+                        Rect boxRect = new Rect(Canvas.GetLeft(box), Canvas.GetTop(box), box.Width, box.Height);
+                        if (boxRect.IntersectsWith(toCheckRect) || boxRect.IntersectsWith(playerRect))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
         }
     }
 }

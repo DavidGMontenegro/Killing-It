@@ -16,12 +16,10 @@ namespace Killing_It
         Canvas canvas;
         public double angleBetween = 0;
 
-
-        private int speed = 4;
+        private int speedX, speedY;
         private Image bullet = new Image();
         private List<Image> bloodStains = new List<Image>();
         private DispatcherTimer bulletTimer = new DispatcherTimer();
-        private DispatcherTimer bloodStainRemoveTimer = new DispatcherTimer();
 
         public void MakeBullet(Canvas canvas)
         {
@@ -40,6 +38,9 @@ namespace Killing_It
             rotateTransform.Angle = angleBetween;
             bullet.RenderTransform = rotateTransform;
 
+            speedX = (mousePosX - bulletLeft) / 15;
+            speedY = (mousePosY - bulletTop) / 15;
+
             canvas.Children.Add(bullet);
 
             bulletTimer.Tick += moveBullet;
@@ -50,32 +51,18 @@ namespace Killing_It
 
         private void moveBullet(object sender, EventArgs e)
         {
-            RotateTransform rotateTransform = new RotateTransform();
-            if (Canvas.GetLeft(bullet) < mousePosX)
-            {
-                Canvas.SetLeft(bullet, Canvas.GetLeft(bullet) + speed);
-            }
 
-            if (Canvas.GetLeft(bullet) > mousePosX)
-            {
-                Canvas.SetLeft(bullet, Canvas.GetLeft(bullet) - speed);
-            }
 
-            if (Canvas.GetTop(bullet) > mousePosY)
-            {
-                Canvas.SetTop(bullet, Canvas.GetTop(bullet) - speed);
-            }
+            Canvas.SetLeft(bullet, Canvas.GetLeft(bullet) + speedX);
 
-            if (Canvas.GetTop(bullet) < mousePosY)
-            {
-                Canvas.SetTop(bullet, Canvas.GetTop(bullet) + speed);
-            }
+            Canvas.SetTop(bullet, Canvas.GetTop(bullet) + speedY);
+
 
             if (Canvas.GetTop(bullet) < 0 || Canvas.GetTop(bullet) + bullet.ActualHeight > canvas.ActualHeight ||
-                Canvas.GetLeft(bullet) < 0 || Canvas.GetLeft(bullet) + bullet.ActualWidth > canvas.ActualWidth || bullet.Source == null)
+                Canvas.GetLeft(bullet) < 0 || Canvas.GetLeft(bullet) + bullet.ActualWidth > canvas.ActualWidth ||
+                bullet.Source == null)
             {
                 bulletTimer.Stop();
-                canvas.Children.Remove(bullet);
                 bullet = null;
             }
         }
